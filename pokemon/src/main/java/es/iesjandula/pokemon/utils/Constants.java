@@ -30,6 +30,4 @@ public final class Constants
 	public static final String POK_TYPE_1 = "Type 1: ";
 
 	public static final String POK_NAME = "Name: ";
-	
-	public static final String POK_NEXT_LINE = "/n";
 }

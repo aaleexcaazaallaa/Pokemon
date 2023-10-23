@@ -1,4 +1,8 @@
 package es.iesjandula.pokemon.utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Alejandro Cazalla Perez
  * 
@@ -275,32 +279,43 @@ public class Pokemon
 	{
 		StringBuilder builder = new StringBuilder();
 		builder.append(Constants.POK_NAME);
-		builder.append(name + Constants.POK_NEXT_LINE);
+		builder.append(name + "\n");
 		builder.append(Constants.POK_TYPE_1);
-		builder.append(type1 + Constants.POK_NEXT_LINE);
+		builder.append(type1 + "\n");
 		builder.append(Constants.POK_TYPE_2);
-		builder.append(type2 + Constants.POK_NEXT_LINE);
+		builder.append(type2 + "\n");
 		builder.append(Constants.POK_TOTAL);
-		builder.append(total + Constants.POK_NEXT_LINE);
+		builder.append(total + "\n");
 		builder.append(Constants.POK_HP);
-		builder.append(hp + Constants.POK_NEXT_LINE);
+		builder.append(hp + "\n");
 		builder.append(Constants.POK_ATTACK);
-		builder.append(attack + Constants.POK_NEXT_LINE);
+		builder.append(attack + "\n");
 		builder.append(Constants.POK_DEFENSE);
-		builder.append(defense + Constants.POK_NEXT_LINE);
+		builder.append(defense + "\n");
 		builder.append(Constants.POK_SP_ATK);
-		builder.append(spAttack + Constants.POK_NEXT_LINE);
+		builder.append(spAttack + "\n");
 		builder.append(Constants.POK_SP_DEF);
-		builder.append(spDefense + Constants.POK_NEXT_LINE);
+		builder.append(spDefense + "\n");
 		builder.append(Constants.POK_SPEED);
-		builder.append(speed + Constants.POK_NEXT_LINE);
+		builder.append(speed + "\n");
 		builder.append(Constants.POK_GENERATION);
-		builder.append(generation + Constants.POK_NEXT_LINE);
+		builder.append(generation + "\n");
 		builder.append(Constants.POK_LEGENDARY);
-		builder.append(legendary + Constants.POK_NEXT_LINE);
+		builder.append(legendary + "\n");
+		builder.append("\n");
 		return builder.toString();
 	}
 	
-	
+	public static List<Pokemon> randomCards(List<Pokemon> pokemon) 
+	{
+		List<Pokemon> selectedPokemon = new ArrayList<Pokemon>(4);
+		int randomPokemon;
+		for(int i = 0; i <= 4; i++)
+		{
+			randomPokemon = (int) (Math.random()*30+1);
+			selectedPokemon.add(pokemon.get(randomPokemon));
+		}
+		return selectedPokemon;
+	}
 	
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParserCsv {
-    public static void main(String[] args) {
+    public static List<Pokemon> parsePokemon() {
         FileInputStream fileInputStream = null;
         List<Pokemon> pokemon = new ArrayList<Pokemon>();
         int iteracion=0;
@@ -48,8 +48,6 @@ public class ParserCsv {
                 }
                 
             }
-            System.out.println(pokemon.toString());
-            System.out.println(iteracion);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -61,5 +59,7 @@ public class ParserCsv {
                 e.printStackTrace();
             }
         }
+        
+        return pokemon;
     }
 }
