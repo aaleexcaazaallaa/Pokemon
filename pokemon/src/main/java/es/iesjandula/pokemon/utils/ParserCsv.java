@@ -10,12 +10,13 @@ import java.util.List;
 public class ParserCsv {
     public static List<Pokemon> parsePokemon() {
         FileInputStream fileInputStream = null;
+        BufferedReader reader = null;
         List<Pokemon> pokemon = new ArrayList<Pokemon>();
         int iteracion=0;
         try {
             fileInputStream = new FileInputStream("pokemon.csv");
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader reader = new BufferedReader(inputStreamReader);
+            reader = new BufferedReader(inputStreamReader);
 
             String line= reader.readLine();
          
@@ -54,6 +55,10 @@ public class ParserCsv {
             try {
                 if (fileInputStream != null) {
                     fileInputStream.close();
+                }
+                if (reader != null)
+                {
+                	reader.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
