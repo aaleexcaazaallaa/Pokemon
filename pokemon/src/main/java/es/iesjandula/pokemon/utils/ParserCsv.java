@@ -42,7 +42,7 @@ public class ParserCsv {
                     iteracion++;
                     
                     line= reader.readLine();
-                    if(iteracion>=30)
+                    if(iteracion>30)
                     {
                 		stop=true;
                     }
