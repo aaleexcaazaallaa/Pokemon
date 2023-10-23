@@ -42,7 +42,22 @@ public class Pokemon
 	/**Pokemon Legendary*/
 	private boolean legendary;
 	
-	
+	/**
+	 * Pokemon Class Constructor
+	 * 
+	 * @param name
+	 * @param type1
+	 * @param type2
+	 * @param total
+	 * @param hp
+	 * @param attack
+	 * @param defense
+	 * @param spAttack
+	 * @param spDefense
+	 * @param speed
+	 * @param generation
+	 * @param legendary
+	 */
 	public Pokemon(String name, String type1, String type2, int total, int hp, int attack, int defense, int spAttack,
 			int spDefense, int speed, int generation, boolean legendary)
 	{
@@ -252,6 +267,9 @@ public class Pokemon
 		this.legendary = legendary;
 	}
 
+	/**
+	 * toString with a string builder with all the pokemon fields
+	 */
 	@Override
 	public String toString()
 	{
