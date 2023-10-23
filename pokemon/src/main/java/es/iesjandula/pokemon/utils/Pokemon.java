@@ -1,5 +1,6 @@
 package es.iesjandula.pokemon.utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * 
  * Pokemon class with all the pokemon attributes
  */
-public class Pokemon
+public class Pokemon implements Serializable
 {
 	/**Pokemon Name*/
 	private String name;
@@ -308,14 +309,19 @@ public class Pokemon
 	
 	public static List<Pokemon> randomCards(List<Pokemon> pokemon) 
 	{
-		List<Pokemon> selectedPokemon = new ArrayList<Pokemon>(4);
-		int randomPokemon;
-		for(int i = 0; i <= 4; i++)
-		{
-			randomPokemon = (int) (Math.random()*30+1);
-			selectedPokemon.add(pokemon.get(randomPokemon));
-		}
-		return selectedPokemon;
+	    List<Pokemon> selectedPokemon = new ArrayList<Pokemon>(4);
+	    
+	    while (selectedPokemon.size() < 5) {
+	        int randomPokemonIndex = (int) (Math.random() * 30+1);
+	        Pokemon randomPokemon = pokemon.get(randomPokemonIndex);
+	        
+	        if (!selectedPokemon.contains(randomPokemon)) {
+	            selectedPokemon.add(randomPokemon);
+	        }
+	    }
+	    
+	    return selectedPokemon;
 	}
+
 	
 }

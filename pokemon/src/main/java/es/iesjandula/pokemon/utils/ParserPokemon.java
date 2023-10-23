@@ -1,14 +1,19 @@
 package es.iesjandula.pokemon.utils;
 
 import java.io.BufferedReader;
+
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParserCsv {
-    public static List<Pokemon> parsePokemon() {
+public class ParserPokemon {
+    public static List<Pokemon> parseCsv() {
         FileInputStream fileInputStream = null;
         BufferedReader reader = null;
         List<Pokemon> pokemon = new ArrayList<Pokemon>();
@@ -67,4 +72,64 @@ public class ParserCsv {
         
         return pokemon;
     }
+    public static void savePokemon(List<Pokemon> listPokemon) 
+    {
+    	
+    	
+    		FileOutputStream fileOutputStream=null;
+    		ObjectOutputStream objectOutputStream =null;
+			try {
+				fileOutputStream = new FileOutputStream("datos.txt");
+				objectOutputStream = new ObjectOutputStream(fileOutputStream);
+				objectOutputStream.writeObject(listPokemon);
+		
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+	            try {
+	                if (objectOutputStream != null) {
+	                	objectOutputStream.close();
+	                }
+	                if (fileOutputStream != null)
+	                {
+	                	fileOutputStream.close();
+	                }
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+			
+			
+    }
+    public static List<Pokemon> readSelectedPokemonFromFile(String filePath) 
+    {
+    	List<Pokemon> selectedPokemon = null;
+    	FileInputStream fileInputStream;
+		try {
+			fileInputStream = new FileInputStream(filePath);
+			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+			selectedPokemon = (List<Pokemon>) objectInputStream.readObject();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+		return selectedPokemon;
+    	
+    	
+    }
+    
+    
+  
 }
