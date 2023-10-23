@@ -108,10 +108,11 @@ public class ParserPokemon {
     public static List<Pokemon> readSelectedPokemonFromFile(String filePath) 
     {
     	List<Pokemon> selectedPokemon = null;
-    	FileInputStream fileInputStream;
+    	FileInputStream fileInputStream=null;
+    	ObjectInputStream objectInputStream =null;
 		try {
 			fileInputStream = new FileInputStream(filePath);
-			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+			objectInputStream = new ObjectInputStream(fileInputStream);
 			selectedPokemon = (List<Pokemon>) objectInputStream.readObject();
 			
 		} catch (FileNotFoundException e) {
@@ -123,7 +124,19 @@ public class ParserPokemon {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}finally {
+            try {
+                if (objectInputStream != null) {
+                	objectInputStream.close();
+                }
+                if (fileInputStream != null)
+                {
+                	fileInputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     	
 		return selectedPokemon;
     	
