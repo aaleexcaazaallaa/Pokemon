@@ -13,12 +13,13 @@ public class PokemonCardGame extends JFrame {
     private JPanel player1Panel;
     private JPanel player2Panel;
     private CardLayout cardLayout;
+    private CardLayout cardLayout2;
 
     public PokemonCardGame(List<Pokemon> player1Deck, List<Pokemon> player2Deck) {
         this.player1Deck = player1Deck;
         this.player2Deck = player2Deck;
 
-        setTitle("Basic Card Game");
+        setTitle("Pokemon Card Game");
         setSize(1000, 500);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,8 +27,9 @@ public class PokemonCardGame extends JFrame {
         player1Panel = new JPanel();
         player2Panel = new JPanel();
         cardLayout = new CardLayout();
+        cardLayout2 = new CardLayout();
         player1Panel.setLayout(cardLayout);
-        player2Panel.setLayout(cardLayout);
+        player2Panel.setLayout(cardLayout2);
 
         add(player1Panel, BorderLayout.WEST);
         add(player2Panel, BorderLayout.EAST);
@@ -49,25 +51,30 @@ public class PokemonCardGame extends JFrame {
 
         player2NextButton.addActionListener(e -> {
             player2CardIndex = (player2CardIndex + 1) % player2Deck.size();
-            cardLayout.show(player2Panel, Integer.toString(player2CardIndex));
+            cardLayout2.show(player2Panel, Integer.toString(player2CardIndex));
         });
 
         player2PrevButton.addActionListener(e -> {
             player2CardIndex = (player2CardIndex - 1 + player2Deck.size()) % player2Deck.size();
-            cardLayout.show(player2Panel, Integer.toString(player2CardIndex));
+            cardLayout2.show(player2Panel, Integer.toString(player2CardIndex));
         });
 
         JPanel buttonPanel1 = new JPanel();
         JPanel buttonPanel2 = new JPanel();
         buttonPanel1.add(player1PrevButton);
         buttonPanel1.add(player1NextButton);
+       
         buttonPanel2.add(player2PrevButton);
         buttonPanel2.add(player2NextButton);
-
-        add(buttonPanel1, BorderLayout.SOUTH);
+       
+       
+       
+        add(buttonPanel1, BorderLayout.NORTH);
+        
         add(buttonPanel2, BorderLayout.SOUTH);
 
-        displayInitialCards(player1Panel, player2Panel);
+        displayInitialCards(player1Panel, player2Panel); 
+        
     }
 
     private void displayInitialCards(JPanel player1Panel, JPanel player2Panel) {
@@ -78,31 +85,7 @@ public class PokemonCardGame extends JFrame {
             player2Panel.add(new CardPanel(player2Deck.get(i)), Integer.toString(i));
         }
         cardLayout.show(player1Panel, Integer.toString(player1CardIndex));
-        cardLayout.show(player2Panel, Integer.toString(player2CardIndex));
+        cardLayout2.show(player2Panel, Integer.toString(player2CardIndex));
     }
 }
 
-class CardPanel extends JPanel {
-    private Pokemon card;
-
-    public CardPanel(Pokemon card) {
-        this.card = card;
-        setPreferredSize(new Dimension(200, 300));
-    }
-
-    public void updateCard(Pokemon card) {
-        this.card = card;
-        repaint();
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight());
-        g.setColor(Color.BLACK);
-        g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-        String pokemonInfo = card.toString();
-        g.drawString(pokemonInfo, 10, 30);
-    }
-}
