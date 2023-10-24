@@ -7,46 +7,46 @@ import java.util.List;
 /**
  * @author Alejandro Cazalla Perez
  * 
- * Pokemon class with all the pokemon attributes
+ *         Pokemon class with all the pokemon attributes
  */
 public class Pokemon implements Serializable
 {
-	/**Pokemon Name*/
+	/** Pokemon Name */
 	private String name;
-	
-	/**Pokemon First Type*/
+
+	/** Pokemon First Type */
 	private String type1;
-	
-	/**Pokemon Second Type*/
+
+	/** Pokemon Second Type */
 	private String type2;
-	
-	/**Pokemon Total Points*/
+
+	/** Pokemon Total Points */
 	private int total;
-	
-	/**Pokemon Health Points*/
+
+	/** Pokemon Health Points */
 	private int hp;
-	
-	/**Pokemon Attack Points*/
+
+	/** Pokemon Attack Points */
 	private int attack;
-	
-	/**Pokemon Defense Points*/
+
+	/** Pokemon Defense Points */
 	private int defense;
-	
-	/**Pokemon Speed Attack Points*/
+
+	/** Pokemon Speed Attack Points */
 	private int spAttack;
-	
-	/**Pokemon Speed Defense Points*/
+
+	/** Pokemon Speed Defense Points */
 	private int spDefense;
-	
-	/**Pokemon Speed Points*/
+
+	/** Pokemon Speed Points */
 	private int speed;
-	
-	/**Pokemon Generation Number*/
+
+	/** Pokemon Generation Number */
 	private int generation;
-	
-	/**Pokemon Legendary*/
+
+	/** Pokemon Legendary */
 	private boolean legendary;
-	
+
 	/**
 	 * Pokemon Class Constructor
 	 * 
@@ -306,22 +306,23 @@ public class Pokemon implements Serializable
 		builder.append("\n");
 		return builder.toString();
 	}
-	
-	public static List<Pokemon> randomCards(List<Pokemon> pokemon) 
+
+	public static List<Pokemon> randomCards(List<Pokemon> pokemon)
 	{
-	    List<Pokemon> selectedPokemon = new ArrayList<Pokemon>(4);
-	    
-	    while (selectedPokemon.size() < 5) {
-	        int randomPokemonIndex = (int) (Math.random() * 30+1);
-	        Pokemon randomPokemon = pokemon.get(randomPokemonIndex);
-	        
-	        if (!selectedPokemon.contains(randomPokemon)) {
-	            selectedPokemon.add(randomPokemon);
-	        }
-	    }
-	    
-	    return selectedPokemon;
+		List<Pokemon> selectedPokemon = new ArrayList<Pokemon>(4);
+
+		while (selectedPokemon.size() < 5)
+		{
+			int randomPokemonIndex = (int) (Math.random() * 30 + 1);
+			Pokemon randomPokemon = pokemon.get(randomPokemonIndex);
+
+			if (!selectedPokemon.contains(randomPokemon))
+			{
+				selectedPokemon.add(randomPokemon);
+			}
+		}
+
+		return selectedPokemon;
 	}
 
-	
 }
