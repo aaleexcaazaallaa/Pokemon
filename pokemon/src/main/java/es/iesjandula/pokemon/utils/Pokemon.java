@@ -46,7 +46,9 @@ public class Pokemon implements Serializable
 
 	/** Pokemon Legendary */
 	private boolean legendary;
-
+	
+	/** Image URL */
+	private String url;
 	/**
 	 * Pokemon Class Constructor
 	 * 
@@ -78,6 +80,7 @@ public class Pokemon implements Serializable
 		this.speed = speed;
 		this.generation = generation;
 		this.legendary = legendary;
+		this.url = "images/"+this.name+".png";
 	}
 
 	/**
@@ -270,6 +273,19 @@ public class Pokemon implements Serializable
 	public void setLegendary(boolean legendary)
 	{
 		this.legendary = legendary;
+	}
+	
+	/**
+	 * @return Get URL from image
+	 */
+	public String getUrl() {
+		return url;
+	}
+	/**
+	 * @param Set URL from image
+	 */
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	/**

@@ -48,7 +48,7 @@ public class CardPanel extends JPanel {
         g.drawString("Legendary: " +String.valueOf(card.isLegendary()), 10, 230);
         try {
         	// Dentro del bloque try-catch donde cargas la imagen
-        	BufferedImage imagen = ImageIO.read(new File("imagen.png"));
+        	BufferedImage imagen = ImageIO.read(new File(card.getUrl()));
 
         	// Especifica el nuevo ancho y alto deseado para la imagen reescalada
         	int nuevoAncho = 100; // Ajusta el valor a tu preferencia
