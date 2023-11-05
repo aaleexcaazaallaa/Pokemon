@@ -1,4 +1,4 @@
-package es.iesjandula.graphicInterface;
+package es.iesjandula.pokemon.graphicInterface;
 
 import javax.swing.*;
 import es.iesjandula.pokemon.utils.Pokemon;

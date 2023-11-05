@@ -12,8 +12,15 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import es.iesjandula.pokemon.exceptions.PokemonException;
+
 public class ParserPokemon {
-    public static List<Pokemon> parseCsv() {
+    public static List<Pokemon> parseCsv() throws PokemonException
+    {
+    	final Logger logger = LogManager.getLogger();
         FileInputStream fileInputStream = null;
         BufferedReader reader = null;
         List<Pokemon> pokemon = new ArrayList<Pokemon>();
@@ -55,7 +62,9 @@ public class ParserPokemon {
                 
             }
         } catch (IOException e) {
-            e.printStackTrace();
+        	String error = "Error en la lectura del fichero";
+			logger.error(error, e);
+			throw new PokemonException (error, e);
         } finally {
             try {
                 if (fileInputStream != null) {
@@ -66,47 +75,53 @@ public class ParserPokemon {
                 	reader.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+            	String error = "Error en la lectura del fichero";
+    			logger.error(error, e);
+    			throw new PokemonException (error, e);
             }
         }
         
         return pokemon;
     }
-    public static void savePokemon(List<Pokemon> listPokemon) 
+    public static void savePokemon(List<Pokemon> listPokemon) throws PokemonException
     {
-    	
-    	
-    		FileOutputStream fileOutputStream=null;
-    		ObjectOutputStream objectOutputStream =null;
-			try {
-				fileOutputStream = new FileOutputStream("datos.txt");
-				objectOutputStream = new ObjectOutputStream(fileOutputStream);
-				objectOutputStream.writeObject(listPokemon);
-		
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}finally {
-	            try {
-	                if (objectOutputStream != null) {
-	                	objectOutputStream.close();
-	                }
-	                if (fileOutputStream != null)
-	                {
-	                	fileOutputStream.close();
-	                }
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
+    	final Logger logger = LogManager.getLogger();
+		FileOutputStream fileOutputStream=null;
+		ObjectOutputStream objectOutputStream =null;
+		try {
+			fileOutputStream = new FileOutputStream("datos.txt");
+			objectOutputStream = new ObjectOutputStream(fileOutputStream);
+			objectOutputStream.writeObject(listPokemon);
+	
+		} catch (FileNotFoundException e) {
+			String error = "No se ha encontrado el fichero";
+			logger.error(error, e);
+			throw new PokemonException (error, e);
+		} catch (IOException e) {
+			String error = "Error en la lectura del fichero";
+			logger.error(error, e);
+			throw new PokemonException (error, e);
+		}finally {
+            try {
+                if (objectOutputStream != null) {
+                	objectOutputStream.close();
+                }
+                if (fileOutputStream != null)
+                {
+                	fileOutputStream.close();
+                }
+            } catch (IOException e) {
+            	String error = "Error en la lectura del fichero";
+    			logger.error(error, e);
+    			throw new PokemonException (error, e);
+            }
+        }
 			
 			
     }
-    public static List<Pokemon> readSelectedPokemonFromFile(String filePath) 
+    public static List<Pokemon> readSelectedPokemonFromFile(String filePath) throws PokemonException 
     {
+    	final Logger logger = LogManager.getLogger();
     	List<Pokemon> selectedPokemon = null;
     	FileInputStream fileInputStream=null;
     	ObjectInputStream objectInputStream =null;
@@ -116,14 +131,17 @@ public class ParserPokemon {
 			selectedPokemon = (List<Pokemon>) objectInputStream.readObject();
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String error = "No se ha encontrado el fichero";
+			logger.error(error, e);
+			throw new PokemonException (error, e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String error = "Error en la lectura del fichero";
+			logger.error(error, e);
+			throw new PokemonException (error, e);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String error = "no se ha encontrado la clase";
+			logger.error(error, e);
+			throw new PokemonException (error, e);
 		}finally {
             try {
                 if (objectInputStream != null) {
@@ -134,7 +152,9 @@ public class ParserPokemon {
                 	fileInputStream.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+            	String error = "Error en la lectura del fichero";
+    			logger.error(error, e);
+    			throw new PokemonException(error, e);
             }
         }
     	

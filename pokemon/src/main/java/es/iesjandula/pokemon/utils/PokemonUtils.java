@@ -17,11 +17,11 @@ public class PokemonUtils
         else
         {
             // Si los tipos no tienen ventajas ni desventajas, compara las estadísticas totales
-            if (pokemon1.getTotal() > pokemon2.getTotal())
+            if (pokemon1.getHp() > pokemon2.getHp())
             {
                 return pokemon1;
             }
-            else if (pokemon1.getTotal() < pokemon2.getTotal())
+            else if (pokemon1.getHp() < pokemon2.getHp())
             {
                 return pokemon2;
             }
@@ -39,20 +39,20 @@ public class PokemonUtils
         // Compara los tipos de los Pokémon
         if (isSuperEffectiveAgainst(pokemon1, pokemon2))
         {
-            return pokemon2;
+            return pokemon1;
         }
         else if (isSuperEffectiveAgainst(pokemon2, pokemon1))
         {
-            return pokemon1;
+            return pokemon2;
         }
         else
         {
             // Si los tipos no tienen ventajas ni desventajas, compara las estadísticas totales
-            if (pokemon1.getTotal() > pokemon2.getTotal())
+            if (pokemon2.getHp() > pokemon1.getHp())
             {
                 return pokemon2;
             }
-            else if (pokemon1.getTotal() < pokemon2.getTotal())
+            else if (pokemon2.getHp() < pokemon1.getHp())
             {
                 return pokemon1;
             }

@@ -1,16 +1,17 @@
-package es.iesjandula.launcher;
+package es.iesjandula.pokemon.launcher;
 
 import java.util.List;
 
 import javax.swing.SwingUtilities;
 
 import es.iesjandula.pokemon.utils.Pokemon;
-import es.iesjandula.graphicInterface.PokemonCardGame;
+import es.iesjandula.pokemon.exceptions.PokemonException;
+import es.iesjandula.pokemon.graphicInterface.PokemonCardGame;
 import es.iesjandula.pokemon.utils.ParserPokemon;
 
 public class PokemonLauncher
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws PokemonException
 	{
 		List<Pokemon> pokemon = ParserPokemon.parseCsv();
 

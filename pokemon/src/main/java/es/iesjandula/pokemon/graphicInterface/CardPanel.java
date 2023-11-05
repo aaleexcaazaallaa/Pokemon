@@ -1,4 +1,4 @@
-package es.iesjandula.graphicInterface;
+package es.iesjandula.pokemon.graphicInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
