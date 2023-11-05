@@ -340,5 +340,20 @@ public class Pokemon implements Serializable
 
 		return selectedPokemon;
 	}
+	
+	public void attack(Pokemon target) {
+        int damage = calculateDamage(); // Calcular el daño 
+        target.receiveDamage(damage);
+    }
+
+    private int calculateDamage() {
+        int damage = this.attack - this.getDefense();
+        return Math.max(damage, 0); // Asegurarse de que el daño sea positivo o cero
+    }
+
+    private void receiveDamage(int damage) {
+        int newHealth = getHp() - damage;
+        setHp(Math.max(newHealth, 0)); // Asegurarse de que la salud no sea negativa
+    }
 
 }

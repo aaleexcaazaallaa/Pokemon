@@ -74,9 +74,10 @@ public class PokemonCardGame extends JFrame
 		startBattleButton.addActionListener(e -> {
 		    List<Pokemon> combate = displayInitialCards(player1Panel, player2Panel);
 		    Pokemon attack = combate.get(0);
-		    Pokemon deffender = combate.get(1);
-		    Pokemon winner = PokemonUtils.determineWinner(attack, deffender);
-		    Pokemon loser = PokemonUtils.determineLoser(attack, deffender);
+		    Pokemon defender = combate.get(1);
+		    updateHealthBars(attack, defender);
+		    Pokemon winner = PokemonUtils.determineWinner(attack, defender);
+		    Pokemon loser = PokemonUtils.determineLoser(attack, defender);
 		    combate.remove(loser);
 		    winnerLabel.setText("                              Ganador: " + winner.getName());
 		    loserLabel.setText("                              Perdedor: " + loser.getName());
@@ -114,6 +115,8 @@ public class PokemonCardGame extends JFrame
 		add(buttonContainer, BorderLayout.NORTH);
 		add(labelsPanel, BorderLayout.CENTER);
 		add(buttonPanel2, BorderLayout.SOUTH);
+		
+		
 
 		displayInitialCards(player1Panel, player2Panel);
 		
@@ -138,4 +141,32 @@ public class PokemonCardGame extends JFrame
 		rivales.add(rival2);
 		return rivales;
 	}
+	
+	private void updateHealthBars(Pokemon attacker, Pokemon defender) {
+	    attacker.attack(defender); 
+	    defender.attack(attacker);
+	    int attackerIndex = player1Deck.indexOf(attacker);
+	    int defenderIndex = player2Deck.indexOf(defender);
+	    
+	    // Actualiza las barras de vida de los Pokémon atacante y defensor
+	    ((CardPanel) player1Panel.getComponent(attackerIndex)).updateHealthBar(attacker.getHp());
+	    ((CardPanel) player2Panel.getComponent(defenderIndex)).updateHealthBar(defender.getHp());
+	    
+	    // Si la vida de uno de los Pokémon llega a 0, elimínalo de la lista
+	    if (attacker.getHp() <= 0) {
+	        player1Deck.remove(attacker);
+	        player1Panel.remove(attackerIndex);
+	    }
+	    if (defender.getHp() <= 0) {
+	        player2Deck.remove(defender);
+	        player2Panel.remove(defenderIndex);
+	    }
+	    
+	    // Repintar los paneles
+	    player1Panel.revalidate();
+	    player1Panel.repaint();
+	    player2Panel.revalidate();
+	    player2Panel.repaint();
+	}
+
 }
