@@ -1,6 +1,9 @@
 package es.iesjandula.pokemon.graphicInterface;
 
 import javax.swing.*;
+
+import es.iesjandula.pokemon.exceptions.PokemonException;
+import es.iesjandula.pokemon.utils.ParserPokemon;
 import es.iesjandula.pokemon.utils.Pokemon;
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,8 +16,6 @@ public class PokemonCardGame extends JFrame
 	private List<Pokemon> player2Deck;
 	private int player1CardIndex = 0;
 	private int player2CardIndex = 0;
-	private JLabel winnerLabel;
-	private JLabel loserLabel;
 	private JPanel player1Panel;
 	private JPanel player2Panel;
 	private CardLayout cardLayout;
@@ -26,7 +27,7 @@ public class PokemonCardGame extends JFrame
 		this.player2Deck = player2Deck;
 
 		setTitle("Pokemon Card Game");
-		setSize(1000, 500);
+		setSize(1000, 600);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -47,6 +48,7 @@ public class PokemonCardGame extends JFrame
 		JButton player1PrevButton = new JButton("Anterior Jugador 1");
 		JButton player2NextButton = new JButton("Siguiente Jugador 2");
 		JButton player2PrevButton = new JButton("Anterior Jugador 2");
+		JButton saveButton = new JButton("Guardar partida");
 
 		player1NextButton.addActionListener(e ->
 		{
@@ -71,6 +73,20 @@ public class PokemonCardGame extends JFrame
 			player2CardIndex = (player2CardIndex - 1 + player2Deck.size()) % player2Deck.size();
 			cardLayout2.show(player2Panel, Integer.toString(player2CardIndex));
 		});
+		
+		saveButton.addActionListener(e ->
+		{
+			try
+			{
+				ParserPokemon.savePokemon(player1Deck, "jugador1.txt");
+				ParserPokemon.savePokemon(player2Deck, "jugador2.txt");
+			} catch (PokemonException exception)
+			{
+				// TODO Auto-generated catch block
+				exception.printStackTrace();
+			}
+		});
+		
 		startBattleButton.addActionListener(e -> {
 		    List<Pokemon> combate = displayInitialCards(player1Panel, player2Panel);
 		    Pokemon attack = combate.get(0);
@@ -93,12 +109,13 @@ public class PokemonCardGame extends JFrame
 		buttonPanel1.add(player1PrevButton);
 		buttonPanel1.add(player1NextButton);
 		buttonStart.add(startBattleButton);
+		buttonStart.add(saveButton);
 		buttonPanel2.add(player2PrevButton);
 		buttonPanel2.add(player2NextButton);
 
 		// Crea un nuevo JPanel para contener los botones
 		JPanel buttonContainer = new JPanel();
-		buttonContainer.setLayout(new GridLayout(2, 1)); // GridLayout de 1 fila y 2 columnas
+		buttonContainer.setLayout(new GridLayout(3, 1)); // GridLayout de 1 fila y 2 columnas
 		
 		// Crea un JPanel para contener winnerLabel y loserLabel
 		JPanel labelsPanel = new JPanel();
@@ -170,10 +187,32 @@ public class PokemonCardGame extends JFrame
             player2Panel.repaint();
 
             if (player1Deck.isEmpty() || player2Deck.isEmpty()) {
-                dispose();
+            	String message = "Hasta la proxima";
+            	displayWinner(message);
+            	dispose();
                 System.exit(0);
             }
         }
     }
+
+	private void displayWinner(String message) {
+	    JLabel endLabel = new JLabel(message);
+
+	    // Configura la fuente y el tamaño del texto para hacerlo más legible
+	    Font font = new Font("Arial", Font.BOLD, 24);
+	    endLabel.setFont(font);
+
+	    // Crea un nuevo JPanel para colocar los JLabels de mensaje y ganador
+	    JPanel winnerPanel = new JPanel();
+	    winnerPanel.setLayout(new BoxLayout(winnerPanel, BoxLayout.Y_AXIS));
+	    winnerPanel.add(endLabel);
+
+	    // Crea un diálogo emergente para mostrar el mensaje de fin del combate y el equipo ganador
+	    JOptionPane.showMessageDialog(this, winnerPanel, "Fin del Combate", JOptionPane.INFORMATION_MESSAGE);
+
+	    // Cierra la ventana principal y finaliza la aplicación
+	    dispose();
+	    System.exit(0);
+	}
 
 }

@@ -1,5 +1,6 @@
 package es.iesjandula.pokemon.launcher;
 
+import java.io.File;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
@@ -28,11 +29,27 @@ public class PokemonLauncher
 		{
 			System.out.println(card);
 		}
-
-		SwingUtilities.invokeLater(() ->
+		
+		File savedGame1 = new File("jugador1.txt");
+		File savedGame2 = new File("jugador2.txt");
+		
+		if(savedGame1.exists() && savedGame2.exists()) 
 		{
-			PokemonCardGame game = new PokemonCardGame(pokemonListUser, pokemonListOpponent);
-			game.setVisible(true);
-		});
+			List<Pokemon> player1List = ParserPokemon.readSelectedPokemonFromFile("jugador1.txt");
+			List<Pokemon> player2List = ParserPokemon.readSelectedPokemonFromFile("jugador2.txt");
+			SwingUtilities.invokeLater(() ->
+			{
+				PokemonCardGame game = new PokemonCardGame(player1List, player2List);
+				game.setVisible(true);
+			});
+		}
+		else 
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				PokemonCardGame game = new PokemonCardGame(pokemonListUser, pokemonListOpponent);
+				game.setVisible(true);
+			});
+		}
 	}
 }

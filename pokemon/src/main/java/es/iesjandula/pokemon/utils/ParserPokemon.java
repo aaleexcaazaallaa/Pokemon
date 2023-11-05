@@ -83,13 +83,13 @@ public class ParserPokemon {
         
         return pokemon;
     }
-    public static void savePokemon(List<Pokemon> listPokemon) throws PokemonException
+    public static void savePokemon(List<Pokemon> listPokemon, String path) throws PokemonException
     {
     	final Logger logger = LogManager.getLogger();
 		FileOutputStream fileOutputStream=null;
 		ObjectOutputStream objectOutputStream =null;
 		try {
-			fileOutputStream = new FileOutputStream("datos.txt");
+			fileOutputStream = new FileOutputStream(path);
 			objectOutputStream = new ObjectOutputStream(fileOutputStream);
 			objectOutputStream.writeObject(listPokemon);
 	
