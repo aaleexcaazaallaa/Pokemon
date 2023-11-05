@@ -75,17 +75,18 @@ public class PokemonCardGame extends JFrame
 		    List<Pokemon> combate = displayInitialCards(player1Panel, player2Panel);
 		    Pokemon attack = combate.get(0);
 		    Pokemon defender = combate.get(1);
-		    updateHealthBars(attack, defender);
-		    Pokemon winner = PokemonUtils.determineWinner(attack, defender);
+		    if (!player1Deck.isEmpty() && !player2Deck.isEmpty()) {
+                updateHealthBars(attack, defender);
+            } else {
+                dispose(); // Cierra la ventana
+                System.exit(0); // Finaliza la aplicación
+
+                // Si una de las listas está vacía, muestra un mensaje o toma otra acción
+                System.out.println("El juego ha terminado");
+            }
 		    Pokemon loser = PokemonUtils.determineLoser(attack, defender);
 		    combate.remove(loser);
-		    winnerLabel.setText("                              Ganador: " + winner.getName());
-		    loserLabel.setText("                              Perdedor: " + loser.getName());
 		});
-		winnerLabel = new JLabel("                              Ganador: ");
-		winnerLabel.setFont(new Font("Arial", Font.BOLD, 16));
-		loserLabel = new JLabel("                              Perdedor: ");
-		loserLabel.setFont(new Font("Arial", Font.BOLD, 16));
 		JPanel buttonStart = new JPanel();
 		JPanel buttonPanel1 = new JPanel();
 		JPanel buttonPanel2 = new JPanel();
@@ -102,10 +103,6 @@ public class PokemonCardGame extends JFrame
 		// Crea un JPanel para contener winnerLabel y loserLabel
 		JPanel labelsPanel = new JPanel();
 		labelsPanel.setLayout(new BoxLayout(labelsPanel, BoxLayout.Y_AXIS));
-
-		// Agrega winnerLabel y loserLabel al panel de etiquetas
-		labelsPanel.add(winnerLabel);
-		labelsPanel.add(loserLabel);
 
 		// Agrega buttonPanel1 y buttonStart al buttonContainer
 		buttonContainer.add(buttonPanel1);
@@ -143,30 +140,40 @@ public class PokemonCardGame extends JFrame
 	}
 	
 	private void updateHealthBars(Pokemon attacker, Pokemon defender) {
-	    attacker.attack(defender); 
-	    defender.attack(attacker);
-	    int attackerIndex = player1Deck.indexOf(attacker);
-	    int defenderIndex = player2Deck.indexOf(defender);
-	    
-	    // Actualiza las barras de vida de los Pokémon atacante y defensor
-	    ((CardPanel) player1Panel.getComponent(attackerIndex)).updateHealthBar(attacker.getHp());
-	    ((CardPanel) player2Panel.getComponent(defenderIndex)).updateHealthBar(defender.getHp());
-	    
-	    // Si la vida de uno de los Pokémon llega a 0, elimínalo de la lista
-	    if (attacker.getHp() <= 0) {
-	        player1Deck.remove(attacker);
-	        player1Panel.remove(attackerIndex);
-	    }
-	    if (defender.getHp() <= 0) {
-	        player2Deck.remove(defender);
-	        player2Panel.remove(defenderIndex);
-	    }
-	    
-	    // Repintar los paneles
-	    player1Panel.revalidate();
-	    player1Panel.repaint();
-	    player2Panel.revalidate();
-	    player2Panel.repaint();
-	}
+        if (player1Panel != null && player2Panel != null) {
+            attacker.attack(defender);
+            defender.attack(attacker);
+            int attackerIndex = player1Deck.indexOf(attacker);
+            int defenderIndex = player2Deck.indexOf(defender);
+
+            if (attackerIndex >= 0 && defenderIndex >= 0) {
+                ((CardPanel) player1Panel.getComponent(attackerIndex)).updateHealthBar(attacker.getHp());
+                ((CardPanel) player2Panel.getComponent(defenderIndex)).updateHealthBar(defender.getHp());
+            }
+
+            if (attacker.getHp() <= 0) {
+                player1Deck.remove(attacker);
+                if (attackerIndex >= 0) {
+                    player1Panel.remove(attackerIndex);
+                }
+            }
+            if (defender.getHp() <= 0) {
+                player2Deck.remove(defender);
+                if (defenderIndex >= 0) {
+                    player2Panel.remove(defenderIndex);
+                }
+            }
+
+            player1Panel.revalidate();
+            player1Panel.repaint();
+            player2Panel.revalidate();
+            player2Panel.repaint();
+
+            if (player1Deck.isEmpty() || player2Deck.isEmpty()) {
+                dispose();
+                System.exit(0);
+            }
+        }
+    }
 
 }

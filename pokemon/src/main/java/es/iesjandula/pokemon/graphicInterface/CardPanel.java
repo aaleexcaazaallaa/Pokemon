@@ -15,9 +15,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.fasterxml.jackson.databind.ser.impl.PropertyBasedObjectIdGenerator;
+
+import es.iesjandula.pokemon.exceptions.PokemonException;
 import es.iesjandula.pokemon.utils.Pokemon;
 
 public class CardPanel extends JPanel {
+	final Logger logger = LogManager.getLogger();
     private Pokemon card;
     private JLabel imagenLabel;
     private JProgressBar healthBar;
@@ -32,7 +39,7 @@ public class CardPanel extends JPanel {
         add(nameLabel, BorderLayout.NORTH);
 		
 		// Crear una barra de vida
-        healthBar = new JProgressBar(0, 100); // El rango puede variar según tus necesidades
+        healthBar = new JProgressBar(0, card.getInitialHealth());
         healthBar.setValue(card.getHp());
         healthBar.setStringPainted(true);
         add(healthBar, BorderLayout.CENTER);
@@ -44,7 +51,7 @@ public class CardPanel extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
@@ -75,7 +82,8 @@ public class CardPanel extends JPanel {
         	g.drawImage(imagenReescalada, 10, 250, this);
 
         } catch (IOException e) {
-            e.printStackTrace();
+        	String error = "Error en la lectura del fichero";
+			logger.error(error, e);
         }
 
     }

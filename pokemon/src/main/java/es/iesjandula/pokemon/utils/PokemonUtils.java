@@ -2,37 +2,6 @@ package es.iesjandula.pokemon.utils;
 
 public class PokemonUtils
 {
-    // Método para determinar el ganador entre dos Pokémon
-    public static Pokemon determineWinner(Pokemon pokemon1, Pokemon pokemon2)
-    {
-        // Compara los tipos de los Pokémon
-        if (isSuperEffectiveAgainst(pokemon1, pokemon2))
-        {
-            return pokemon1;
-        }
-        else if (isSuperEffectiveAgainst(pokemon2, pokemon1))
-        {
-            return pokemon2;
-        }
-        else
-        {
-            // Si los tipos no tienen ventajas ni desventajas, compara las estadísticas totales
-            if (pokemon1.getHp() > pokemon2.getHp())
-            {
-                return pokemon1;
-            }
-            else if (pokemon1.getHp() < pokemon2.getHp())
-            {
-                return pokemon2;
-            }
-            else
-            {
-                // Si las estadísticas totales son iguales, el resultado es un empate
-                return null;
-            }
-        }
-    }
-    
  // Método para determinar el perdedor entre dos Pokémon
     public static Pokemon determineLoser(Pokemon pokemon1, Pokemon pokemon2)
     {
@@ -48,13 +17,13 @@ public class PokemonUtils
         else
         {
             // Si los tipos no tienen ventajas ni desventajas, compara las estadísticas totales
-            if (pokemon2.getHp() > pokemon1.getHp())
-            {
-                return pokemon2;
-            }
-            else if (pokemon2.getHp() < pokemon1.getHp())
+            if (pokemon1.getHp() < pokemon2.getHp())
             {
                 return pokemon1;
+            }
+            else if (pokemon1.getHp() > pokemon2.getHp())
+            {
+                return pokemon2;
             }
             else
             {

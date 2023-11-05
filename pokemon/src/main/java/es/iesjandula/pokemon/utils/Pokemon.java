@@ -25,6 +25,9 @@ public class Pokemon implements Serializable
 
 	/** Pokemon Health Points */
 	private int hp;
+	
+	/** Pokemon INITIAl Health Points */
+	private int initialHp;
 
 	/** Pokemon Attack Points */
 	private int attack;
@@ -65,14 +68,15 @@ public class Pokemon implements Serializable
 	 * @param generation
 	 * @param legendary
 	 */
-	public Pokemon(String name, String type1, String type2, int total, int hp, int attack, int defense, int spAttack,
+	public Pokemon(String name, String type1, String type2, int total, int initialHp, int attack, int defense, int spAttack,
 			int spDefense, int speed, int generation, boolean legendary)
 	{
 		this.name = name;
 		this.type1 = type1;
 		this.type2 = type2;
 		this.total = total;
-		this.hp = hp;
+		this.hp = initialHp;
+		this.initialHp = initialHp;
 		this.attack = attack;
 		this.defense = defense;
 		this.spAttack = spAttack;
@@ -162,6 +166,10 @@ public class Pokemon implements Serializable
 	{
 		this.hp = hp;
 	}
+	
+	public int getInitialHealth() {
+        return this.initialHp;
+    }
 
 	/**
 	 * @return the attack
