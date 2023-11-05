@@ -26,7 +26,7 @@ public class CardPanel extends JPanel {
         this.card = card;
         setPreferredSize(new Dimension(200, 300));
         
-     // Crear una etiqueta para mostrar el nombre del Pokémon
+        // Crear una etiqueta para mostrar el nombre del Pokémon
         JLabel nameLabel = new JLabel(card.getName());
         nameLabel.setHorizontalAlignment(JLabel.CENTER);
         add(nameLabel, BorderLayout.NORTH);
