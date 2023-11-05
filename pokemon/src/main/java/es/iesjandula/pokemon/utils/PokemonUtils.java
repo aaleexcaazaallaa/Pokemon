@@ -32,6 +32,37 @@ public class PokemonUtils
             }
         }
     }
+    
+ // Método para determinar el perdedor entre dos Pokémon
+    public static Pokemon determineLoser(Pokemon pokemon1, Pokemon pokemon2)
+    {
+        // Compara los tipos de los Pokémon
+        if (isSuperEffectiveAgainst(pokemon1, pokemon2))
+        {
+            return pokemon2;
+        }
+        else if (isSuperEffectiveAgainst(pokemon2, pokemon1))
+        {
+            return pokemon1;
+        }
+        else
+        {
+            // Si los tipos no tienen ventajas ni desventajas, compara las estadísticas totales
+            if (pokemon1.getTotal() > pokemon2.getTotal())
+            {
+                return pokemon2;
+            }
+            else if (pokemon1.getTotal() < pokemon2.getTotal())
+            {
+                return pokemon1;
+            }
+            else
+            {
+                // Si las estadísticas totales son iguales, el resultado es un empate
+                return null;
+            }
+        }
+    }
 
     // Método para verificar si un tipo es super efectivo contra otro
     private static boolean isSuperEffectiveAgainst(Pokemon attacker, Pokemon defender)

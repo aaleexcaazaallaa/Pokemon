@@ -14,6 +14,7 @@ public class PokemonCardGame extends JFrame
 	private int player1CardIndex = 0;
 	private int player2CardIndex = 0;
 	private JLabel winnerLabel;
+	private JLabel loserLabel;
 	private JPanel player1Panel;
 	private JPanel player2Panel;
 	private CardLayout cardLayout;
@@ -75,10 +76,15 @@ public class PokemonCardGame extends JFrame
 		    Pokemon attack = combate.get(0);
 		    Pokemon deffender = combate.get(1);
 		    Pokemon winner = PokemonUtils.determineWinner(attack, deffender);
+		    Pokemon loser = PokemonUtils.determineLoser(attack, deffender);
+		    combate.remove(loser);
 		    winnerLabel.setText("                              Ganador: " + winner.getName());
+		    loserLabel.setText("                              Perdedor: " + loser.getName());
 		});
 		winnerLabel = new JLabel("                              Ganador: ");
 		winnerLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		loserLabel = new JLabel("                              Perdedor: ");
+		loserLabel.setFont(new Font("Arial", Font.BOLD, 16));
 		JPanel buttonStart = new JPanel();
 		JPanel buttonPanel1 = new JPanel();
 		JPanel buttonPanel2 = new JPanel();
@@ -91,6 +97,14 @@ public class PokemonCardGame extends JFrame
 		// Crea un nuevo JPanel para contener los botones
 		JPanel buttonContainer = new JPanel();
 		buttonContainer.setLayout(new GridLayout(2, 1)); // GridLayout de 1 fila y 2 columnas
+		
+		// Crea un JPanel para contener winnerLabel y loserLabel
+		JPanel labelsPanel = new JPanel();
+		labelsPanel.setLayout(new BoxLayout(labelsPanel, BoxLayout.Y_AXIS));
+
+		// Agrega winnerLabel y loserLabel al panel de etiquetas
+		labelsPanel.add(winnerLabel);
+		labelsPanel.add(loserLabel);
 
 		// Agrega buttonPanel1 y buttonStart al buttonContainer
 		buttonContainer.add(buttonPanel1);
@@ -98,15 +112,10 @@ public class PokemonCardGame extends JFrame
 
 		// Agrega el buttonContainer al área BorderLayout.NORTH
 		add(buttonContainer, BorderLayout.NORTH);
-		add(winnerLabel, BorderLayout.CENTER);
+		add(labelsPanel, BorderLayout.CENTER);
 		add(buttonPanel2, BorderLayout.SOUTH);
 
 		displayInitialCards(player1Panel, player2Panel);
-		
-		
-		
-		
-
 		
 	}
 
