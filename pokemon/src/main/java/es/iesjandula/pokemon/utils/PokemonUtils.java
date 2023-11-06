@@ -40,32 +40,31 @@ public class PokemonUtils
         String type2 = attacker.getType2();
 
         
-        if (type1.equals("Grass") && (defender.getType1().equals("Water") || defender.getType2().equals("Water")))
+        if (type1.equals("Grass") || type2.equals("Grass") && (defender.getType1().equals("Water") || defender.getType2().equals("Water")))
         {
             return true;
         }
-        else if (type1.equals("Fire") && (defender.getType1().equals("Grass") || defender.getType2().equals("Grass")))
+        else if (type1.equals("Fire") || type2.equals("Fire")  && (defender.getType1().equals("Grass") || defender.getType2().equals("Grass")))
         {
             return true;
         }
-        else if (type1.equals("Water") && (defender.getType1().equals("Fire") || defender.getType2().equals("Fire")))
+        else if (type1.equals("Water") || type2.equals("Water")  && (defender.getType1().equals("Fire") || defender.getType2().equals("Fire")))
         {
             return true;
         }
-        else if (type1.equals("Electric") && (defender.getType1().equals("Water") || defender.getType2().equals("Water")))
+        else if (type1.equals("Electric") || type2.equals("Electric")  && (defender.getType1().equals("Water") || defender.getType2().equals("Water")))
         {
             return true;
         }
-        // Agrega más relaciones de tipo
-        else if (type1.equals("Grass") && (defender.getType1().equals("Electric") || defender.getType2().equals("Electric")))
+        else if (type1.equals("Grass") || type2.equals("Grass")  && (defender.getType1().equals("Electric") || defender.getType2().equals("Electric")))
         {
             return true;
         }
-        else if (type1.equals("Water") && (defender.getType1().equals("Electric") || defender.getType2().equals("Electric")))
+        else if (type1.equals("Water") || type2.equals("Water")  && (defender.getType1().equals("Electric") || defender.getType2().equals("Electric")))
         {
             return true;
         }
-        else if (type1.equals("Electric") && (defender.getType1().equals("Fire") || defender.getType2().equals("Fire")))
+        else if (type1.equals("Electric") || type2.equals("Electric")  && (defender.getType1().equals("Fire") || defender.getType2().equals("Fire")))
         {
             return true;
         }

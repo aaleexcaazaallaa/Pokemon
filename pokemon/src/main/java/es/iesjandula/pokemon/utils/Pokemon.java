@@ -75,8 +75,8 @@ public class Pokemon implements Serializable
 		this.type1 = type1;
 		this.type2 = type2;
 		this.total = total;
-		this.hp = initialHp;
 		this.initialHp = initialHp;
+		this.hp = initialHp;
 		this.attack = attack;
 		this.defense = defense;
 		this.spAttack = spAttack;
@@ -355,13 +355,21 @@ public class Pokemon implements Serializable
     }
 
     private int calculateDamage() {
-        int damage = this.attack - this.getDefense();
+        int damage = 0;
+        if(this.getAttack() > this.getDefense())
+        {
+        	damage = this.getAttack() - this.getDefense();
+        }
+        else 
+        {
+        	damage = this.getDefense() - this.getAttack();
+        }
         return Math.max(damage, 0); // Asegurarse de que el daño sea positivo o cero
     }
 
     private void receiveDamage(int damage) {
-        int newHealth = getHp() - damage;
-        setHp(Math.max(newHealth, 0)); // Asegurarse de que la salud no sea negativa
+        int newHealth =this.getHp() - damage;
+        setHp(Math.max(newHealth, 0));// Asegurarse de que la salud no sea negativa
     }
 
 }

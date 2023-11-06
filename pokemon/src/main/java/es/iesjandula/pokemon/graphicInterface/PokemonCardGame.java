@@ -141,6 +141,7 @@ public class PokemonCardGame extends JFrame
 		for (int i = 0; i < player1Deck.size(); i++)
 		{
 			player1Panel.add(new CardPanel(player1Deck.get(i)), Integer.toString(i));
+			
 		}
 		for (int i = 0; i < player2Deck.size(); i++)
 		{
@@ -156,26 +157,38 @@ public class PokemonCardGame extends JFrame
 		return rivales;
 	}
 	
-	private void updateHealthBars(Pokemon attacker, Pokemon defender) {
+	private void updateHealthBars(Pokemon player1, Pokemon player2) {
         if (player1Panel != null && player2Panel != null) {
-            attacker.attack(defender);
-            defender.attack(attacker);
-            int attackerIndex = player1Deck.indexOf(attacker);
-            int defenderIndex = player2Deck.indexOf(defender);
+        	int player1Speed = player1.getSpAttack();
+        	int player2Speed = player2.getSpAttack();
+        	if (player1Speed > player2Speed) {
+        	    // pokemonA ataca primero
+        		player1.attack(player2);
+        		player2.attack(player1);
+        	} else if (player1Speed < player2Speed) {
+        	    // pokemonB ataca primero
+        		player2.attack(player1);
+        		player1.attack(player2);
+        	} else {
+        		player1.attack(player2);
+        		player2.attack(player1);
+        	}
+            int attackerIndex = player1Deck.indexOf(player1);
+            int defenderIndex = player2Deck.indexOf(player2);
 
             if (attackerIndex >= 0 && defenderIndex >= 0) {
-                ((CardPanel) player1Panel.getComponent(attackerIndex)).updateHealthBar(attacker.getHp());
-                ((CardPanel) player2Panel.getComponent(defenderIndex)).updateHealthBar(defender.getHp());
+                ((CardPanel) player1Panel.getComponent(attackerIndex)).updateHealthBar(player1.getHp());
+                ((CardPanel) player2Panel.getComponent(defenderIndex)).updateHealthBar(player2.getHp());
             }
 
-            if (attacker.getHp() <= 0) {
-                player1Deck.remove(attacker);
+            if (player1.getHp() == 0) {
+                player1Deck.remove(player1);
                 if (attackerIndex >= 0) {
                     player1Panel.remove(attackerIndex);
                 }
             }
-            if (defender.getHp() <= 0) {
-                player2Deck.remove(defender);
+            if (player2.getHp() == 0) {
+                player2Deck.remove(player2);
                 if (defenderIndex >= 0) {
                     player2Panel.remove(defenderIndex);
                 }

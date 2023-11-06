@@ -33,20 +33,24 @@ public class CardPanel extends JPanel {
         this.card = card;
         setPreferredSize(new Dimension(200, 300));
         
-        // Crear una etiqueta para mostrar el nombre del Pokémon
+        //Crear una etiqueta para mostrar el nombre del Pokémon
         JLabel nameLabel = new JLabel(card.getName());
         nameLabel.setHorizontalAlignment(JLabel.CENTER);
         add(nameLabel, BorderLayout.NORTH);
 		
-		// Crear una barra de vida
-        healthBar = new JProgressBar(0, card.getInitialHealth());
+		//Crear una barra de vida
+        int vidaMaxima = card.getInitialHealth();
+        healthBar = new JProgressBar(0, vidaMaxima);
         healthBar.setValue(card.getHp());
-        healthBar.setStringPainted(true);
+        healthBar.setStringPainted(false);
         add(healthBar, BorderLayout.CENTER);
     }
 
     public void updateCard(Pokemon card) {
         this.card = card;
+        int vidaMaxima = card.getInitialHealth();
+        healthBar.setMaximum(vidaMaxima); // Actualiza el valor máximo de la barra de vida
+        healthBar.setValue(card.getHp());
         repaint();
     }
 
@@ -82,7 +86,7 @@ public class CardPanel extends JPanel {
         	g.drawImage(imagenReescalada, 10, 250, this);
 
         } catch (IOException e) {
-        	String error = "Error en la lectura del fichero";
+        	String error = "Error al cargar la imagen";
 			logger.error(error, e);
         }
 
