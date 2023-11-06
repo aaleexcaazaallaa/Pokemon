@@ -1,11 +1,21 @@
 package es.iesjandula.pokemon.utils;
 
+/**
+ * @author Alejandro Cazalla Perez, Alvaro Marmol Romero
+ * 
+ * Class with two methods, the first one to establish the losing pokemon and the second one to check if it is super effective
+ */
 public class PokemonUtils
 {
-	// Método para determinar el perdedor entre dos Pokémon
+	/**
+	 * Method to establish the losing pokemon
+	 * @param pokemon1
+	 * @param pokemon2
+	 * @return
+	 */
 	public static Pokemon determineLoser(Pokemon pokemon1, Pokemon pokemon2)
 	{
-		// Compara los tipos de los Pokémon
+		// Compare the types
 		if (isSuperEffectiveAgainst(pokemon1, pokemon2))
 		{
 			return pokemon1;
@@ -14,8 +24,7 @@ public class PokemonUtils
 			return pokemon2;
 		} else
 		{
-			// Si los tipos no tienen ventajas ni desventajas, compara las estadísticas
-			// totales
+			// If the types have no advantages or disadvantages, compare hp
 			if (pokemon1.getHp() < pokemon2.getHp())
 			{
 				return pokemon1;
@@ -30,7 +39,12 @@ public class PokemonUtils
 
 	}
 
-	// Método para verificar si un tipo es super efectivo contra otro
+	/**
+	 * Method that checks if one type is super effective against another
+	 * @param attacker
+	 * @param defender
+	 * @return
+	 */
 	private static boolean isSuperEffectiveAgainst(Pokemon attacker, Pokemon defender)
 	{
 		String type1 = attacker.getType1();

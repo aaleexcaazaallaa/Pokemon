@@ -17,8 +17,18 @@ import org.apache.logging.log4j.Logger;
 
 import es.iesjandula.pokemon.exceptions.PokemonException;
 
+/**
+ * @author Alejandro Cazalla Perez, Alvaro Marmol Romero
+ * 
+ * Class in charge of parsing the csv with all the pokemon and save and read them
+ */
 public class ParserPokemon
 {
+	/**
+	 * Method that reads the csv
+	 * @return
+	 * @throws PokemonException
+	 */
 	public static List<Pokemon> parseCsv() throws PokemonException
 	{
 		final Logger logger = LogManager.getLogger();
@@ -40,8 +50,7 @@ public class ParserPokemon
 				String[] parts = line.split(",");
 
 				if (parts.length >= 13)
-				{ // Asegúrate de que haya al menos 13 valores en cada fila
-
+				{
 					String name = parts[1];
 					String type1 = parts[2];
 					String type2 = parts[3];
@@ -94,6 +103,12 @@ public class ParserPokemon
 		return pokemon;
 	}
 
+	/**
+	 * Method that saves a list of pokemon in a file
+	 * @param listPokemon
+	 * @param path
+	 * @throws PokemonException
+	 */
 	public static void savePokemon(List<Pokemon> listPokemon, String path) throws PokemonException
 	{
 		final Logger logger = LogManager.getLogger();
@@ -137,6 +152,12 @@ public class ParserPokemon
 
 	}
 
+	/**
+	 * Method that reads the selected list of pokemon from a file
+	 * @param filePath
+	 * @return
+	 * @throws PokemonException
+	 */
 	public static List<Pokemon> readSelectedPokemonFromFile(String filePath) throws PokemonException
 	{
 		final Logger logger = LogManager.getLogger();
@@ -151,17 +172,17 @@ public class ParserPokemon
 
 		} catch (FileNotFoundException e)
 		{
-			String error = "No se ha encontrado el fichero";
+			String error = "The file hasn't been found";
 			logger.error(error, e);
 			throw new PokemonException(error, e);
 		} catch (IOException e)
 		{
-			String error = "Error en la lectura del fichero";
+			String error = "An error ocurred while reading the file";
 			logger.error(error, e);
 			throw new PokemonException(error, e);
 		} catch (ClassNotFoundException e)
 		{
-			String error = "no se ha encontrado la clase";
+			String error = "The class hasn't been found";
 			logger.error(error, e);
 			throw new PokemonException(error, e);
 		} finally
@@ -178,7 +199,7 @@ public class ParserPokemon
 				}
 			} catch (IOException e)
 			{
-				String error = "Error en la lectura del fichero";
+				String error = "An error ocurred while reading the file";
 				logger.error(error, e);
 				throw new PokemonException(error, e);
 			}

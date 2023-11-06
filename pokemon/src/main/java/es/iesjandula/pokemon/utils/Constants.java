@@ -3,7 +3,7 @@ package es.iesjandula.pokemon.utils;
 /**
  * @author Alejandro Cazalla Perez
  * 
- *         Pokemon class with all the constants
+ * Pokemon class with all the constants
  */
 public final class Constants
 {

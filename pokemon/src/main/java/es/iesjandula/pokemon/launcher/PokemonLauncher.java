@@ -13,11 +13,17 @@ import es.iesjandula.pokemon.exceptions.PokemonException;
 import es.iesjandula.pokemon.graphicInterface.PokemonCardGame;
 import es.iesjandula.pokemon.utils.ParserPokemon;
 
+/**
+ * @author Alejandro Cazalla Perez, Alvaro Marmol Romero
+ * 
+ * This is the main class of the program
+ */
 public class PokemonLauncher
 {
 	public static void main(String[] args) throws PokemonException
 	{
 		final Logger logger = LogManager.getLogger();
+		/**Pokemon list with all the pokemon*/
 		List<Pokemon> pokemon = ParserPokemon.parseCsv();
 
 		System.out.println("YOUR CARDS: ");
@@ -34,7 +40,9 @@ public class PokemonLauncher
 			System.out.println(card);
 		}
 
+		/**file with the pokemon of player 1 when the game was saved*/
 		File savedGame1 = new File("jugador1.txt");
+		/**file with the pokemon of player 2 when the game was saved*/
 		File savedGame2 = new File("jugador2.txt");
 
 		if (savedGame1.exists() && savedGame2.exists())
@@ -64,7 +72,7 @@ public class PokemonLauncher
 					game = new PokemonCardGame(pokemonListUser, pokemonListOpponent);
 				} catch (PokemonException e)
 				{
-					String error = "Excepcion propia";
+					String error = "self exception";
 					logger.error(error, e);
 				}
 				game.setVisible(true);

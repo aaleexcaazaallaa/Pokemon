@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Alejandro Cazalla Perez
+ * @author Alejandro Cazalla Perez, Alvaro Marmol Romero
  * 
- *         Pokemon class with all the pokemon attributes
+ * Pokemon class with all the pokemon attributes
  */
 public class Pokemon implements Serializable
 {
@@ -59,7 +59,7 @@ public class Pokemon implements Serializable
 	 * @param type1
 	 * @param type2
 	 * @param total
-	 * @param hp
+	 * @param initialHp
 	 * @param attack
 	 * @param defense
 	 * @param spAttack
@@ -331,6 +331,11 @@ public class Pokemon implements Serializable
 		return builder.toString();
 	}
 
+	/**
+	 * Method that chooses five random cards
+	 * @param pokemon
+	 * @return
+	 */
 	public static List<Pokemon> randomCards(List<Pokemon> pokemon)
 	{
 		List<Pokemon> selectedPokemon = new ArrayList<Pokemon>(4);
@@ -349,11 +354,19 @@ public class Pokemon implements Serializable
 		return selectedPokemon;
 	}
 	
+	/**
+	 * Method to attack
+	 * @param target
+	 */
 	public void attack(Pokemon target) {
-        int damage = calculateDamage(); // Calcular el daño 
+        int damage = calculateDamage();
         target.receiveDamage(damage);
     }
 
+	/**
+	 * Method to calculate the damege
+	 * @return
+	 */
     private int calculateDamage() {
         int damage = 0;
         if(this.getAttack() > this.getDefense())
@@ -364,12 +377,16 @@ public class Pokemon implements Serializable
         {
         	damage = this.getDefense() - this.getAttack();
         }
-        return Math.max(damage, 0); // Asegurarse de que el daño sea positivo o cero
+        return Math.max(damage, 0);
     }
 
+    /**
+     * Method to receive damage
+     * @param damage
+     */
     private void receiveDamage(int damage) {
         int newHealth =this.getHp() - damage;
-        setHp(Math.max(newHealth, 0));// Asegurarse de que la salud no sea negativa
+        setHp(Math.max(newHealth, 0));
     }
 
 }

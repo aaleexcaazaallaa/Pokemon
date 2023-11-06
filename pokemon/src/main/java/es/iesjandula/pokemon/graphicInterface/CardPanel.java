@@ -11,38 +11,55 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import es.iesjandula.pokemon.exceptions.PokemonException;
 import es.iesjandula.pokemon.utils.Pokemon;
 
+/**
+ * @author Alejandro Cazalla Perez, Alvaro Marmol Romero
+ * 
+ * This class is in charge of designing the pokemon cards
+ */
 public class CardPanel extends JPanel
 {
 	final Logger logger = LogManager.getLogger();
+	/** pokemon card */
 	private Pokemon card;
-	private int vidaMaxima;
-	private int vidaActual;
+	/** Maximum health points */
+	private int maxHp;
+	/** Actual health points */
+	private int actualHp;
 
+	/**
+	 * Constructor of CardPanel class
+	 * @param card
+	 */
 	public CardPanel(Pokemon card)
 	{
 		this.card = card;
-		this.vidaMaxima = card.getInitialHealth();
-		this.vidaActual = card.getHp();
+		this.maxHp = card.getInitialHealth();
+		this.actualHp = card.getHp();
 		setPreferredSize(new Dimension(200, 300));
 	}
 
+	/**
+	 * Method to update the card
+	 * @param card
+	 */
 	public void updateCard(Pokemon card)
 	{
 		this.card = card;
-		this.vidaMaxima = card.getInitialHealth();
-		this.vidaActual = card.getHp();
+		this.maxHp = card.getInitialHealth();
+		this.actualHp = card.getHp();
 		repaint();
 	}
 
+	/**
+	 * Method to paint the card 
+	 */
 	@Override
 	protected void paintComponent(Graphics g)
 	{
@@ -63,44 +80,37 @@ public class CardPanel extends JPanel
 		g.drawString("Legendary: " + String.valueOf(card.isLegendary()), 10, 245);
 		try
 		{
-			// Dentro del bloque try-catch donde cargas la imagen
-			BufferedImage imagen = ImageIO.read(new File(card.getUrl()));
+			BufferedImage image = ImageIO.read(new File(card.getUrl()));
 
-			// Especifica el nuevo ancho y alto deseado para la imagen reescalada
-			int nuevoAncho = 100; // Ajusta el valor a tu preferencia
-			int nuevoAlto = 100; // Ajusta el valor a tu preferencia
+			int newWidth = 100; 
+			int newHeight = 100; 
 
-			// Reescala la imagen
-			Image imagenReescalada = imagen.getScaledInstance(nuevoAncho, nuevoAlto, Image.SCALE_SMOOTH);
+			Image resizedImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
 
-			// Configura el JLabel para mostrar la imagen reescalada
-			g.drawImage(imagenReescalada, 10, 250, this);
+			g.drawImage(resizedImage, 10, 250, this);
 
 		} catch (IOException e)
 		{
-			String error = "Error al cargar la imagen";
+			String error = "An error ocurred while the image was charging";
 			logger.error(error, e);
 		}
 
 		g.setColor(Color.RED);
-		g.fillRect(10, 30, 180, 20); // Barra de vida completa en rojo
+		g.fillRect(10, 30, 180, 20);
 
-		int anchoVida = (int) (180.0 * vidaActual / vidaMaxima);
+		int lifeWidth = (int) (180.0 * actualHp / maxHp);
 		g.setColor(Color.GREEN);
-		g.fillRect(10, 30, anchoVida, 20); // Barra de vida actual en verde
+		g.fillRect(10, 30, lifeWidth, 20);
 
-		// Mostrar el valor de la vida actual en la barra
 		g.setColor(Color.BLACK);
-		String vidaString = "Vida: " + vidaActual + " / " + vidaMaxima;
+		String lifeText = "Life: " + actualHp + " / " + maxHp;
 		FontMetrics fm = g.getFontMetrics();
-		int textWidth = fm.stringWidth(vidaString);
-		int x = 10 + (180 - textWidth) / 2; // Centrar el texto en la barra
-		g.drawString(vidaString, x, 45);
+		int textWidth = fm.stringWidth(lifeText);
+		int x = 10 + (180 - textWidth) / 2;
+		g.drawString(lifeText, x, 45);
 
-		// Mostrar el nombre del Pokémon encima de la barra de vida
 		g.setColor(Color.BLACK);
 
-		// Establecer la fuente en negrita y más grande
 		Font font = g.getFont().deriveFont(Font.BOLD, 14f);
 		g.setFont(font);
 
@@ -109,9 +119,13 @@ public class CardPanel extends JPanel
 		updateCard(card);
 	}
 
+	/**
+	 * Method to update the health bar 
+	 * @param newHealth
+	 */
 	public void updateHealthBar(int newHealth)
 	{
-		this.vidaActual = newHealth;
+		this.actualHp = newHealth;
 		repaint();
 	}
 }

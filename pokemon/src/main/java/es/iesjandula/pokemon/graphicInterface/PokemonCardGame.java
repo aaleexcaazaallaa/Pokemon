@@ -14,18 +14,38 @@ import java.util.ArrayList;
 import java.util.List;
 import es.iesjandula.pokemon.utils.PokemonUtils;
 
+/**
+ * @author Alejandro Cazalla Perez, Alvaro Marmol Romero
+ * 
+ * Class in charge doing the main interface
+ */
 public class PokemonCardGame extends JFrame
 {
+	/** Player 1 pokemon deck of cards */
 	private List<Pokemon> player1Deck;
+	/** Player 2 pokemon deck of cards */
 	private List<Pokemon> player2Deck;
+	/** Player 1 deck index */
 	private int player1CardIndex = 0;
+	/** Player 2 deck index */
 	private int player2CardIndex = 0;
+	/** Player 1 panel */
 	private JPanel player1Panel;
+	/** Player 2 panel */
 	private JPanel player2Panel;
+	/** Player 1 cardLayout */
 	private CardLayout cardLayout;
+	/** Player 2 cardLayout */
 	private CardLayout cardLayout2;
+	/** save game */
 	private boolean save = false;
 
+	/**
+	 * Method in charge of paint and give funcionality to the graphic interface
+	 * @param player1Deck
+	 * @param player2Deck
+	 * @throws PokemonException
+	 */
 	public PokemonCardGame(List<Pokemon> player1Deck, List<Pokemon> player2Deck) throws PokemonException
 	{
 		final Logger logger = LogManager.getLogger();
@@ -103,10 +123,9 @@ public class PokemonCardGame extends JFrame
 				updateHealthBars(attack, defender);
 			} else
 			{
-				dispose(); // Cierra la ventana
-				System.exit(0); // Finaliza la aplicación
+				dispose();
+				System.exit(0);
 
-				// Si una de las listas está vacía, muestra un mensaje o toma otra acción
 				System.out.println("El juego ha terminado");
 			}
 			Pokemon loser = PokemonUtils.determineLoser(attack, defender);
@@ -122,19 +141,15 @@ public class PokemonCardGame extends JFrame
 		buttonPanel2.add(player2PrevButton);
 		buttonPanel2.add(player2NextButton);
 
-		// Crea un nuevo JPanel para contener los botones
 		JPanel buttonContainer = new JPanel();
-		buttonContainer.setLayout(new GridLayout(3, 1)); // GridLayout de 1 fila y 2 columnas
+		buttonContainer.setLayout(new GridLayout(3, 1));
 
-		// Crea un JPanel para contener winnerLabel y loserLabel
 		JPanel labelsPanel = new JPanel();
 		labelsPanel.setLayout(new BoxLayout(labelsPanel, BoxLayout.Y_AXIS));
 
-		// Agrega buttonPanel1 y buttonStart al buttonContainer
 		buttonContainer.add(buttonPanel1);
 		buttonContainer.add(buttonStart);
 
-		// Agrega el buttonContainer al área BorderLayout.NORTH
 		add(buttonContainer, BorderLayout.NORTH);
 		add(labelsPanel, BorderLayout.CENTER);
 		add(buttonPanel2, BorderLayout.SOUTH);
@@ -143,6 +158,12 @@ public class PokemonCardGame extends JFrame
 
 	}
 
+	/**
+	 * Method to show the initial cards
+	 * @param player1Panel
+	 * @param player2Panel
+	 * @return
+	 */
 	private List<Pokemon> displayInitialCards(JPanel player1Panel, JPanel player2Panel)
 	{
 		for (int i = 0; i < player1Deck.size(); i++)
@@ -164,6 +185,11 @@ public class PokemonCardGame extends JFrame
 		return rivales;
 	}
 
+	/**
+	 * Method to update the health bars of both pokemon
+	 * @param player1
+	 * @param player2
+	 */
 	private void updateHealthBars(Pokemon player1, Pokemon player2)
 	{
 		if (player1Panel != null && player2Panel != null)
@@ -172,12 +198,10 @@ public class PokemonCardGame extends JFrame
 			int player2Speed = player2.getSpAttack();
 			if (player1Speed > player2Speed)
 			{
-				// pokemonA ataca primero
 				player1.attack(player2);
 				player2.attack(player1);
 			} else if (player1Speed < player2Speed)
 			{
-				// pokemonB ataca primero
 				player2.attack(player1);
 				player1.attack(player2);
 			} else
@@ -226,21 +250,21 @@ public class PokemonCardGame extends JFrame
 		}
 	}
 
+	/**
+	 * Method to show a message of end of the combat
+	 * @param message
+	 */
 	private void displayWinner(String message)
 	{
 		JLabel endLabel = new JLabel(message);
 
-		// Configura la fuente y el tamaño del texto para hacerlo más legible
 		Font font = new Font("Arial", Font.BOLD, 24);
 		endLabel.setFont(font);
 
-		// Crea un nuevo JPanel para colocar los JLabels de mensaje y ganador
 		JPanel winnerPanel = new JPanel();
 		winnerPanel.setLayout(new BoxLayout(winnerPanel, BoxLayout.Y_AXIS));
 		winnerPanel.add(endLabel);
 
-		// Crea un diálogo emergente para mostrar el mensaje de fin del combate y el
-		// equipo ganador
 		JOptionPane.showMessageDialog(this, winnerPanel, "Fin del Combate", JOptionPane.INFORMATION_MESSAGE);
 
 		File savedGame1 = new File("jugador1.txt");
@@ -251,7 +275,6 @@ public class PokemonCardGame extends JFrame
 			savedGame2.delete();
 		}
 
-		// Cierra la ventana principal y finaliza la aplicación
 		dispose();
 		System.exit(0);
 	}
