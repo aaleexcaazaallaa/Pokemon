@@ -2,10 +2,14 @@ package es.iesjandula.pokemon.graphicInterface;
 
 import javax.swing.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import es.iesjandula.pokemon.exceptions.PokemonException;
 import es.iesjandula.pokemon.utils.ParserPokemon;
 import es.iesjandula.pokemon.utils.Pokemon;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import es.iesjandula.pokemon.utils.PokemonUtils;
@@ -20,9 +24,11 @@ public class PokemonCardGame extends JFrame
 	private JPanel player2Panel;
 	private CardLayout cardLayout;
 	private CardLayout cardLayout2;
+	private boolean save = false;
 
-	public PokemonCardGame(List<Pokemon> player1Deck, List<Pokemon> player2Deck)
+	public PokemonCardGame(List<Pokemon> player1Deck, List<Pokemon> player2Deck) throws PokemonException
 	{
+		final Logger logger = LogManager.getLogger();
 		this.player1Deck = player1Deck;
 		this.player2Deck = player2Deck;
 
@@ -40,7 +46,6 @@ public class PokemonCardGame extends JFrame
 
 		add(player1Panel, BorderLayout.WEST);
 		add(player2Panel, BorderLayout.EAST);
-		
 
 		JButton startBattleButton = new JButton("Comenzar Combate");
 
@@ -73,35 +78,39 @@ public class PokemonCardGame extends JFrame
 			player2CardIndex = (player2CardIndex - 1 + player2Deck.size()) % player2Deck.size();
 			cardLayout2.show(player2Panel, Integer.toString(player2CardIndex));
 		});
-		
+
 		saveButton.addActionListener(e ->
 		{
+			save = true;
 			try
 			{
 				ParserPokemon.savePokemon(player1Deck, "jugador1.txt");
 				ParserPokemon.savePokemon(player2Deck, "jugador2.txt");
 			} catch (PokemonException exception)
 			{
-				// TODO Auto-generated catch block
-				exception.printStackTrace();
+				String error = "Excepcion propia";
+				logger.error(error, e);
 			}
 		});
-		
-		startBattleButton.addActionListener(e -> {
-		    List<Pokemon> combate = displayInitialCards(player1Panel, player2Panel);
-		    Pokemon attack = combate.get(0);
-		    Pokemon defender = combate.get(1);
-		    if (!player1Deck.isEmpty() && !player2Deck.isEmpty()) {
-                updateHealthBars(attack, defender);
-            } else {
-                dispose(); // Cierra la ventana
-                System.exit(0); // Finaliza la aplicación
 
-                // Si una de las listas está vacía, muestra un mensaje o toma otra acción
-                System.out.println("El juego ha terminado");
-            }
-		    Pokemon loser = PokemonUtils.determineLoser(attack, defender);
-		    combate.remove(loser);
+		startBattleButton.addActionListener(e ->
+		{
+			List<Pokemon> combate = displayInitialCards(player1Panel, player2Panel);
+			Pokemon attack = combate.get(0);
+			Pokemon defender = combate.get(1);
+			if (!player1Deck.isEmpty() && !player2Deck.isEmpty())
+			{
+				updateHealthBars(attack, defender);
+			} else
+			{
+				dispose(); // Cierra la ventana
+				System.exit(0); // Finaliza la aplicación
+
+				// Si una de las listas está vacía, muestra un mensaje o toma otra acción
+				System.out.println("El juego ha terminado");
+			}
+			Pokemon loser = PokemonUtils.determineLoser(attack, defender);
+			combate.remove(loser);
 		});
 		JPanel buttonStart = new JPanel();
 		JPanel buttonPanel1 = new JPanel();
@@ -116,7 +125,7 @@ public class PokemonCardGame extends JFrame
 		// Crea un nuevo JPanel para contener los botones
 		JPanel buttonContainer = new JPanel();
 		buttonContainer.setLayout(new GridLayout(3, 1)); // GridLayout de 1 fila y 2 columnas
-		
+
 		// Crea un JPanel para contener winnerLabel y loserLabel
 		JPanel labelsPanel = new JPanel();
 		labelsPanel.setLayout(new BoxLayout(labelsPanel, BoxLayout.Y_AXIS));
@@ -129,11 +138,9 @@ public class PokemonCardGame extends JFrame
 		add(buttonContainer, BorderLayout.NORTH);
 		add(labelsPanel, BorderLayout.CENTER);
 		add(buttonPanel2, BorderLayout.SOUTH);
-		
-		
 
 		displayInitialCards(player1Panel, player2Panel);
-		
+
 	}
 
 	private List<Pokemon> displayInitialCards(JPanel player1Panel, JPanel player2Panel)
@@ -141,7 +148,7 @@ public class PokemonCardGame extends JFrame
 		for (int i = 0; i < player1Deck.size(); i++)
 		{
 			player1Panel.add(new CardPanel(player1Deck.get(i)), Integer.toString(i));
-			
+
 		}
 		for (int i = 0; i < player2Deck.size(); i++)
 		{
@@ -150,82 +157,103 @@ public class PokemonCardGame extends JFrame
 		cardLayout.show(player1Panel, Integer.toString(player1CardIndex));
 		cardLayout2.show(player2Panel, Integer.toString(player2CardIndex));
 		List<Pokemon> rivales = new ArrayList<Pokemon>();
-		Pokemon rival1 =this.player1Deck.get(player1CardIndex);
+		Pokemon rival1 = this.player1Deck.get(player1CardIndex);
 		rivales.add(rival1);
-		Pokemon rival2 =this.player2Deck.get(player2CardIndex);
+		Pokemon rival2 = this.player2Deck.get(player2CardIndex);
 		rivales.add(rival2);
 		return rivales;
 	}
-	
-	private void updateHealthBars(Pokemon player1, Pokemon player2) {
-        if (player1Panel != null && player2Panel != null) {
-        	int player1Speed = player1.getSpAttack();
-        	int player2Speed = player2.getSpAttack();
-        	if (player1Speed > player2Speed) {
-        	    // pokemonA ataca primero
-        		player1.attack(player2);
-        		player2.attack(player1);
-        	} else if (player1Speed < player2Speed) {
-        	    // pokemonB ataca primero
-        		player2.attack(player1);
-        		player1.attack(player2);
-        	} else {
-        		player1.attack(player2);
-        		player2.attack(player1);
-        	}
-            int attackerIndex = player1Deck.indexOf(player1);
-            int defenderIndex = player2Deck.indexOf(player2);
 
-            if (attackerIndex >= 0 && defenderIndex >= 0) {
-                ((CardPanel) player1Panel.getComponent(attackerIndex)).updateHealthBar(player1.getHp());
-                ((CardPanel) player2Panel.getComponent(defenderIndex)).updateHealthBar(player2.getHp());
-            }
+	private void updateHealthBars(Pokemon player1, Pokemon player2)
+	{
+		if (player1Panel != null && player2Panel != null)
+		{
+			int player1Speed = player1.getSpAttack();
+			int player2Speed = player2.getSpAttack();
+			if (player1Speed > player2Speed)
+			{
+				// pokemonA ataca primero
+				player1.attack(player2);
+				player2.attack(player1);
+			} else if (player1Speed < player2Speed)
+			{
+				// pokemonB ataca primero
+				player2.attack(player1);
+				player1.attack(player2);
+			} else
+			{
+				player1.attack(player2);
+				player2.attack(player1);
+			}
+			int attackerIndex = player1Deck.indexOf(player1);
+			int defenderIndex = player2Deck.indexOf(player2);
 
-            if (player1.getHp() == 0) {
-                player1Deck.remove(player1);
-                if (attackerIndex >= 0) {
-                    player1Panel.remove(attackerIndex);
-                }
-            }
-            if (player2.getHp() == 0) {
-                player2Deck.remove(player2);
-                if (defenderIndex >= 0) {
-                    player2Panel.remove(defenderIndex);
-                }
-            }
+			if (attackerIndex >= 0 && defenderIndex >= 0)
+			{
+				((CardPanel) player1Panel.getComponent(attackerIndex)).updateHealthBar(player1.getHp());
+				((CardPanel) player2Panel.getComponent(defenderIndex)).updateHealthBar(player2.getHp());
+			}
 
-            player1Panel.revalidate();
-            player1Panel.repaint();
-            player2Panel.revalidate();
-            player2Panel.repaint();
+			if (player1.getHp() <= 0)
+			{
+				player1Deck.remove(player1);
+				if (attackerIndex >= 0)
+				{
+					player1Panel.remove(attackerIndex);
+				}
+			}
+			if (player2.getHp() <= 0)
+			{
+				player2Deck.remove(player2);
+				if (defenderIndex >= 0)
+				{
+					player2Panel.remove(defenderIndex);
+				}
+			}
 
-            if (player1Deck.isEmpty() || player2Deck.isEmpty()) {
-            	String message = "Hasta la proxima";
-            	displayWinner(message);
-            	dispose();
-                System.exit(0);
-            }
-        }
-    }
+			player1Panel.revalidate();
+			player1Panel.repaint();
+			player2Panel.revalidate();
+			player2Panel.repaint();
 
-	private void displayWinner(String message) {
-	    JLabel endLabel = new JLabel(message);
+			if (player1Deck.isEmpty() || player2Deck.isEmpty())
+			{
+				String message = "Hasta la proxima";
+				displayWinner(message);
+				dispose();
+				System.exit(0);
+			}
+		}
+	}
 
-	    // Configura la fuente y el tamaño del texto para hacerlo más legible
-	    Font font = new Font("Arial", Font.BOLD, 24);
-	    endLabel.setFont(font);
+	private void displayWinner(String message)
+	{
+		JLabel endLabel = new JLabel(message);
 
-	    // Crea un nuevo JPanel para colocar los JLabels de mensaje y ganador
-	    JPanel winnerPanel = new JPanel();
-	    winnerPanel.setLayout(new BoxLayout(winnerPanel, BoxLayout.Y_AXIS));
-	    winnerPanel.add(endLabel);
+		// Configura la fuente y el tamaño del texto para hacerlo más legible
+		Font font = new Font("Arial", Font.BOLD, 24);
+		endLabel.setFont(font);
 
-	    // Crea un diálogo emergente para mostrar el mensaje de fin del combate y el equipo ganador
-	    JOptionPane.showMessageDialog(this, winnerPanel, "Fin del Combate", JOptionPane.INFORMATION_MESSAGE);
+		// Crea un nuevo JPanel para colocar los JLabels de mensaje y ganador
+		JPanel winnerPanel = new JPanel();
+		winnerPanel.setLayout(new BoxLayout(winnerPanel, BoxLayout.Y_AXIS));
+		winnerPanel.add(endLabel);
 
-	    // Cierra la ventana principal y finaliza la aplicación
-	    dispose();
-	    System.exit(0);
+		// Crea un diálogo emergente para mostrar el mensaje de fin del combate y el
+		// equipo ganador
+		JOptionPane.showMessageDialog(this, winnerPanel, "Fin del Combate", JOptionPane.INFORMATION_MESSAGE);
+
+		File savedGame1 = new File("jugador1.txt");
+		File savedGame2 = new File("jugador2.txt");
+		if (save == false)
+		{
+			savedGame1.delete();
+			savedGame2.delete();
+		}
+
+		// Cierra la ventana principal y finaliza la aplicación
+		dispose();
+		System.exit(0);
 	}
 
 }
