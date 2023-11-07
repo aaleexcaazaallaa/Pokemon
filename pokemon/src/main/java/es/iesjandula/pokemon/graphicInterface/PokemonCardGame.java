@@ -240,9 +240,23 @@ public class PokemonCardGame extends JFrame
 			player2Panel.revalidate();
 			player2Panel.repaint();
 
-			if (player1Deck.isEmpty() || player2Deck.isEmpty())
+			if (player1Deck.isEmpty())
 			{
-				String message = "Hasta la proxima";
+				String message = "Hasta la proxima, el jugador 2 gano";
+				displayWinner(message);
+				dispose();
+				System.exit(0);
+			}
+			else if(player2Deck.isEmpty())
+			{
+				String message = "Hasta la proxima, el jugador 1 gano";
+				displayWinner(message);
+				dispose();
+				System.exit(0);
+			}
+			else if(player1Deck.isEmpty() && player2Deck.isEmpty())
+			{
+				String message = "Hasta la proxima, esto ha sido un empate";
 				displayWinner(message);
 				dispose();
 				System.exit(0);
